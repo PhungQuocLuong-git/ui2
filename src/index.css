@@ -48,3 +48,8 @@ ol, ul {
 .game-info {
   margin-left: 20px;
 }
+
+.bold-text {
+  border: rgb(0, 0, 0) solid 2px;
+  color: rgb(45, 8, 253);
+}
