@@ -44,7 +44,9 @@ function Game(props) {
 
   const [history, setHistory] = useState([
     {
-      squares: Array(9).fill(null)
+      squares: Array(9).fill(null),
+      latestCheck:[]
+      
     }
   ])
 
@@ -62,12 +64,14 @@ function Game(props) {
     squares[i] = xIsNext ? "X" : "O";
     setHistory(historyTemp.concat([
       {
-        squares: squares
+        squares: squares,
+        latestCheck: [i%3, Math.floor(i/3)]
       }
     ]))
     setStepNumber(historyTemp.length);
     setXIsNext(!xIsNext)
     setSelectedItem(selectedItem+1)
+    
   }
 
   const jumpTo = (step) => {
@@ -89,7 +93,7 @@ function Game(props) {
   const moves = history.map((step, move) => {
     console.log("step",step);
     const desc = move ?
-      'Go to move #' + move + ". Position :()":
+      'Go to move #' + move + ". Position :" + step.latestCheck.toString():
       'Go to game start';
     return (
       <li key={move}>
