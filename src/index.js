@@ -87,16 +87,13 @@ function Game(props) {
   const handleSelectItem = (i) => {
     jumpTo(i);
     setSelectedItem(i);
-    // console.log("item chon ", i);
   }
   
-  console.log(history);
 
   const current = history[stepNumber];
   const winner = calculateWinner(current.squares);
 
   const moves = history.map((step, move) => {
-    console.log("step",step);
     const desc = move ?
       'Go to move #' + move + ". Position :(" + step.latestCheck.toString() + ")":
       'Go to game start';
@@ -107,13 +104,12 @@ function Game(props) {
     );
   });
 
-
-
   let status;
   if (winner) {
     status = "Winner: " + winner;
   } else {
-    status = "Next player: " + (xIsNext ? "X" : "O");
+    if(history.length<=9) status = "Next player: " + (xIsNext ? "X" : "O");
+    else status = "The game result is a draw ";
   }
 
   return (
