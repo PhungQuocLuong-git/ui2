@@ -54,3 +54,7 @@ ol, ul {
   color: rgb(36, 155, 0);
   font-weight: bold;
 }
+
+.win {
+  background-color: rgb(0, 187, 16) !important;
+}

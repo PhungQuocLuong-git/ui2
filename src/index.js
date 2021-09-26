@@ -3,8 +3,9 @@ import ReactDOM from 'react-dom';
 import './index.css';
 
 function Square(props) {
+  const winpos = props.winnerPos
   return (
-    <button className="square" onClick={props.onClick}>
+    <button onClick={props.onClick} className={winpos.indexOf(props.k) !== -1  ? "square win" : "square" }>
       {props.value}
     </button>
   );
@@ -15,6 +16,8 @@ function Board(props) {
     return (
       <Square
         key={i}
+        k ={i}
+        winnerPos={props.winnerPos}
         value={props.squares[i]}
         onClick={() => props.onClick(i)}
       />
@@ -54,6 +57,7 @@ function Game(props) {
   const [xIsNext, setXIsNext] = useState(true)
   const [selectedItem, setSelectedItem] = useState(0)
   const [sortBy, setSortBy] = useState(true);
+  const [winnerPos, setWinnerPos] = useState([])
 
   const handleClickSortBy = () => {
     setSortBy(!sortBy)
@@ -70,7 +74,8 @@ function Game(props) {
     setHistory(historyTemp.concat([
       {
         squares: squares,
-        latestCheck: [i%3, Math.floor(i/3)]
+        latestCheck: [i%3, Math.floor(i/3)],
+        winnerPos: []
       }
     ]))
     setStepNumber(historyTemp.length);
@@ -87,11 +92,12 @@ function Game(props) {
   const handleSelectItem = (i) => {
     jumpTo(i);
     setSelectedItem(i);
+    setWinnerPos([]);
   }
-  
 
   const current = history[stepNumber];
   const winner = calculateWinner(current.squares);
+
 
   const moves = history.map((step, move) => {
     const desc = move ?
@@ -106,7 +112,11 @@ function Game(props) {
 
   let status;
   if (winner) {
-    status = "Winner: " + winner;
+    status = "Winner: " + winner[0];
+    if(winnerPos.length===0)
+    {
+      setWinnerPos(winner[1]);
+    }
   } else {
     if(history.length<=9) status = "Next player: " + (xIsNext ? "X" : "O");
     else status = "The game result is a draw ";
@@ -117,6 +127,7 @@ function Game(props) {
       <div className="game-board">
         <Board
           squares={current.squares}
+          winnerPos= {winnerPos}
           onClick={i => handleClick(i)}
         />
       </div>
@@ -133,7 +144,7 @@ function Game(props) {
 
 ReactDOM.render(<Game />, document.getElementById("root"));
 
-function calculateWinner(squares) {
+function calculateWinner (squares) {
   const lines = [
     [0, 1, 2],
     [3, 4, 5],
@@ -147,7 +158,8 @@ function calculateWinner(squares) {
   for (let i = 0; i < lines.length; i++) {
     const [a, b, c] = lines[i];
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return squares[a];
+      
+      return [squares[a],lines[i]];
     }
   }
   return null;
