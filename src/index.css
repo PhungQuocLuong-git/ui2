@@ -52,4 +52,5 @@ ol, ul {
 .bold-text {
   border: rgb(0, 0, 0) solid 2px;
   color: rgb(36, 155, 0);
+  font-weight: bold;
 }

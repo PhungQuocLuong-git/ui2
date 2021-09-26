@@ -53,6 +53,11 @@ function Game(props) {
   const [stepNumber, setStepNumber] = useState(0)
   const [xIsNext, setXIsNext] = useState(true)
   const [selectedItem, setSelectedItem] = useState(0)
+  const [sortBy, setSortBy] = useState(true);
+
+  const handleClickSortBy = () => {
+    setSortBy(!sortBy)
+  }
 
   const handleClick = (i) => {
     const historyTemp = history.slice(0, stepNumber + 1);
@@ -93,7 +98,7 @@ function Game(props) {
   const moves = history.map((step, move) => {
     console.log("step",step);
     const desc = move ?
-      'Go to move #' + move + ". Position :" + step.latestCheck.toString():
+      'Go to move #' + move + ". Position :(" + step.latestCheck.toString() + ")":
       'Go to game start';
     return (
       <li key={move}>
@@ -101,6 +106,8 @@ function Game(props) {
       </li>
     );
   });
+
+
 
   let status;
   if (winner) {
@@ -118,8 +125,9 @@ function Game(props) {
         />
       </div>
       <div className="game-info">
+        <button onClick={handleClickSortBy}>{sortBy ? "Ascending" : "Descending"}</button>
         <div>{status}</div>
-        <ol>{moves}</ol>
+        <ol>{sortBy ? moves : moves.reverse()}</ol>
       </div>
     </div>
   );
