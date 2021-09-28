@@ -1,7 +1,7 @@
 {
   "name": "my-app",
   "version": "0.1.0",
-  "homepage": "https://PhungQuocLuong-git.github.io/ui/index",
+  "homepage": "https://PhungQuocLuong-git.github.io/ui",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.14.1",
