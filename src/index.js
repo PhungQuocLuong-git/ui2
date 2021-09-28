@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
+const LEN = 5;
+
 function Square(props) {
   const winpos = props.winnerPos
   return (
@@ -13,6 +15,7 @@ function Square(props) {
 
 function Board(props) {
   const renderSquare = (i) => {
+    console.log(i);
     return (
       <Square
         key={i}
@@ -24,7 +27,12 @@ function Board(props) {
     );
   }
 
-  const temp = [0, 1, 2];
+  const temp = [];
+  for(let i=0;i<LEN;i++)
+  {
+    temp.push(i);
+  }
+
 
   return (
     <div>
@@ -33,7 +41,7 @@ function Board(props) {
         (
           <div key={i + "abc"} className="board-row">
             {
-              temp.map(j => renderSquare(3 * i + j))
+              temp.map(j => renderSquare(LEN * i + j))
             }
           </div>
         )
@@ -47,7 +55,7 @@ function Game(props) {
 
   const [history, setHistory] = useState([
     {
-      squares: Array(9).fill(null),
+      squares: Array(LEN*LEN).fill(null),
       latestCheck:[]
       
     }
@@ -74,7 +82,7 @@ function Game(props) {
     setHistory(historyTemp.concat([
       {
         squares: squares,
-        latestCheck: [i%3, Math.floor(i/3)],
+        latestCheck: [i%LEN, Math.floor(i/LEN)],
         winnerPos: []
       }
     ]))
@@ -118,7 +126,7 @@ function Game(props) {
       setWinnerPos(winner[1]);
     }
   } else {
-    if(history.length<=9) status = "Next player: " + (xIsNext ? "X" : "O");
+    if(history.length<=LEN) status = "Next player: " + (xIsNext ? "X" : "O");
     else status = "The game result is a draw ";
   }
 
@@ -145,22 +153,62 @@ function Game(props) {
 ReactDOM.render(<Game />, document.getElementById("root"));
 
 function calculateWinner (squares) {
-  const lines = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6]
-  ];
-  for (let i = 0; i < lines.length; i++) {
-    const [a, b, c] = lines[i];
-    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      
-      return [squares[a],lines[i]];
+  const lines = [];
+  for(let i=0;i<LEN;i++)
+  {
+    let t = [];
+    for(let j=0;j<LEN;j++)
+    {
+      t.push(i*LEN+j);
     }
+    lines.push(t)
+  }
+
+  for(let i=0;i<LEN;i++)
+  {
+    let t = [];
+    for(let j=0;j<LEN;j++)
+    {
+      t.push(j*LEN+i);
+    }
+    lines.push(t)
+  }
+
+  let t1 =[]
+  let t2 = []
+  for(let i=0;i<LEN;i++)
+  {
+    t1.push(i*(LEN+1))
+    t2.push((i+1)*(LEN-1))
+  }
+
+  lines.push(t1);
+  lines.push(t2);
+  console.log(lines);
+
+
+
+  for (let i = 0; i < lines.length; i++) {
+
+    let flag =0;
+    for(let j = 0;j <LEN; j++ )
+    {
+      if(j===0)
+      {
+        if (!squares[lines[i][0]]) flag=1;
+      }
+      else{
+        if (squares[lines[i][0]] !== squares[lines[i][j]]) flag=1;
+      }
+    }
+
+    if(flag===0){
+      return [squares[lines[i][0]],lines[i]];
+    }
+    // if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+      
+    //   return [squares[a],lines[i]];
+    // }
   }
   return null;
 }
