@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
-const LEN = 5;
+const LEN = 3;
 
 function Square(props) {
   const winpos = props.winnerPos
@@ -126,7 +126,7 @@ function Game(props) {
       setWinnerPos(winner[1]);
     }
   } else {
-    if(history.length<=LEN) status = "Next player: " + (xIsNext ? "X" : "O");
+    if(history.length<=LEN*LEN) status = "Next player: " + (xIsNext ? "X" : "O");
     else status = "The game result is a draw ";
   }
 
