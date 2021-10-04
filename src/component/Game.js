@@ -24,6 +24,65 @@ function Game(props) {
         setSortBy(!sortBy)
     }
 
+    const calculateWinner = (squares, LEN) => {
+        const lines = [];
+        for(let i=0;i<LEN;i++)
+        {
+          let t = [];
+          for(let j=0;j<LEN;j++)
+          {
+            t.push(i*LEN+j);
+          }
+          lines.push(t)
+        }
+      
+        for(let i=0;i<LEN;i++)
+        {
+          let t = [];
+          for(let j=0;j<LEN;j++)
+          {
+            t.push(j*LEN+i);
+          }
+          lines.push(t)
+        }
+      
+        let t1 =[]
+        let t2 = []
+        for(let i=0;i<LEN;i++)
+        {
+          t1.push(i*(LEN+1))
+          t2.push((i+1)*(LEN-1))
+        }
+      
+        lines.push(t1);
+        lines.push(t2);
+        console.log(lines);
+      
+        for (let i = 0; i < lines.length; i++) {
+      
+          let flag =0;
+          for(let j = 0;j <LEN; j++ )
+          {
+            if(j===0)
+            {
+              if (!squares[lines[i][0]]) flag=1;
+            }
+            else{
+              if (squares[lines[i][0]] !== squares[lines[i][j]]) flag=1;
+            }
+          }
+      
+          if(flag===0){
+            return [squares[lines[i][0]],lines[i]];
+          }
+          // if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+            
+          //   return [squares[a],lines[i]];
+          // }
+        }
+        return null;
+      }
+
     const handleClick = (i) => {
         const historyTemp = history.slice(0, stepNumber + 1);
         const current = historyTemp[historyTemp.length - 1];
@@ -92,6 +151,7 @@ function Game(props) {
         }
     }
 
+
     return (
         <div className="game">
             <div>
@@ -114,66 +174,7 @@ function Game(props) {
     );
 }
 
-function calculateWinner (squares, LEN) {
-    const lines = [];
-    for(let i=0;i<LEN;i++)
-    {
-      let t = [];
-      for(let j=0;j<LEN;j++)
-      {
-        t.push(i*LEN+j);
-      }
-      lines.push(t)
-    }
-  
-    for(let i=0;i<LEN;i++)
-    {
-      let t = [];
-      for(let j=0;j<LEN;j++)
-      {
-        t.push(j*LEN+i);
-      }
-      lines.push(t)
-    }
-  
-    let t1 =[]
-    let t2 = []
-    for(let i=0;i<LEN;i++)
-    {
-      t1.push(i*(LEN+1))
-      t2.push((i+1)*(LEN-1))
-    }
-  
-    lines.push(t1);
-    lines.push(t2);
-    console.log(lines);
-  
-  
-  
-    for (let i = 0; i < lines.length; i++) {
-  
-      let flag =0;
-      for(let j = 0;j <LEN; j++ )
-      {
-        if(j===0)
-        {
-          if (!squares[lines[i][0]]) flag=1;
-        }
-        else{
-          if (squares[lines[i][0]] !== squares[lines[i][j]]) flag=1;
-        }
-      }
-  
-      if(flag===0){
-        return [squares[lines[i][0]],lines[i]];
-      }
-      // if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-        
-      //   return [squares[a],lines[i]];
-      // }
-    }
-    return null;
-  }
+
   
 
 export default Game;
