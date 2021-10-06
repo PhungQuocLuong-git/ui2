@@ -154,8 +154,9 @@ function Game(props) {
 
     return (
         <div className="game">
-            <div>
-                <input type="number" value={LEN} onChange={handleSetLen}/>
+            <div className="set">
+                <label>Chọn kích thước ô đánh</label>
+                <div><input type="number" value={LEN} onChange={handleSetLen}/></div>
             </div>
             <div className="game-board">
                 <Board

@@ -58,3 +58,7 @@ ol, ul {
 .win {
   background-color: rgb(0, 187, 16) !important;
 }
+
+.setnum {
+  margin-right: 15px;
+}
