@@ -4,7 +4,7 @@ import Square from './Square';
 
 function Board({LEN, winnerPos, squares, onClick}) {
     const renderSquare = (i) => {
-        console.log(i);
+
         return (
             <Square
                 key={i}
